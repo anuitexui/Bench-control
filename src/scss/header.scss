@@ -1,0 +1,26 @@
+.header{
+	&__menu{
+		margin: 15px 15px 0px;
+	}
+
+	&__tab{
+		position: relative;
+		padding: 15px;
+		font-size: 18px;
+		background-color: $background;
+		border-radius: 10px 10px 0px 0px;
+		min-width: 150px;
+		display: inline-block;
+		color: $textColor;
+		border-left: 1px solid $gray;
+		border-right: 1px solid $gray;
+		border-top: 1px solid $gray;
+	}
+
+	&__tab.active{
+		background-color: $textColor2;
+		font-weight: 500;
+		border-bottom: 1px solid $textColor2;
+		z-index: 10;
+	}
+}

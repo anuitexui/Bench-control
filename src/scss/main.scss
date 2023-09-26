@@ -1,0 +1,157 @@
+@import './reset.scss';
+@import './vars.scss';
+@import './header.scss';
+@import './dropdown.scss';
+@import './confirm-form.scss';
+@import './form.scss';
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+
+html {
+   font-size: 16px;
+   color: black;
+   font-family: montserrat, sans-serif;
+}
+
+body {
+   background: linear-gradient(180deg, $blue, $textColor2);
+}
+
+.container {
+   max-width: $maxWidthCont;
+   margin: 0 auto;
+   padding-left: 15px;
+   padding-right: 15px;
+}
+
+.tab{
+   &__body {
+      padding: 15px;
+      border: 1px solid $gray;
+      border-radius: 15px;
+      position: relative;
+      top: -1px;
+      margin: 0 5px;
+      background-color: $textColor2;
+   }
+
+   &__btn {
+      border: 1px solid $gray;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: $textColor2;
+      transition: 0.2s;
+
+      &:hover {
+         background-color: $blue;
+      }
+   }
+
+   &__btn--add {
+      position: absolute;
+      font-weight: 500;
+      right: 15px;
+      top: 15px;
+
+      &:hover {
+         background-color: $blue;
+      }
+   }
+
+   &__btn--red {
+      &:hover {
+         background-color: $red;
+      }
+   }
+
+   &__btn--close {
+      position: absolute;
+      font-weight: 500;
+      right: 15px;
+      top: 15px;
+   }
+
+   &__form {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 15px;
+      border: 1px solid $gray;
+      border-radius: 10px;
+      background: $background;
+      align-items: flex-end;
+   }
+
+   &__form--edit {
+		position: absolute;
+		left: 50%;
+		top: 40%;
+		width: 95%;
+		transform: translateX(-50%);
+		box-shadow: -3px 3px 10px -5px $textColor;
+	}
+
+   &__table {
+      margin-top: 45px;
+      width: 100%;
+      border: 1px solid $gray;
+      border-radius: 10px;
+      overflow: hidden;
+
+      table {
+         width: 100%;
+         border-collapse: collapse;
+      }
+
+      th,
+      td {
+      padding: 5px 8px;
+      }
+      th {
+      text-align: left;
+      }
+
+      thead th {
+         background-color: $blue;
+         padding: 15px 8px;
+      }
+
+      // tbody tr:hover {
+      //    background-color: $gray;
+      // }
+
+      tbody tr {
+         &:nth-child(odd) {
+            background: $background;
+         }
+      }
+
+      tbody td {
+         position: relative;
+      }
+
+      .edit-cell {
+         width: 135px;
+
+         .tab__btn--remove {
+            margin-left: 10px;
+            height: 31px;
+            padding: 0px 8px;
+            display: inline-flex;
+            align-items: center;
+            position: absolute;
+
+            &:hover {
+               background-color: $red;
+            }
+
+            svg{
+               width: 15px;
+               height: 17px;
+            }
+         }
+      }
+   }
+}
+

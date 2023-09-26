@@ -1,0 +1,38 @@
+{
+  "name": "bench-control",
+  "description": "A React.js project using Webpack",
+  "version": "1.0.0",
+  "author": "oleg lyubichenko",
+  "scripts": {
+    "dev": "webpack serve --mode=development",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "history": "5.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropdown": "^1.11.0",
+    "react-router": "6.3.0",
+    "react-router-dom": "6.3.0",
+    "react-table": "^7.8.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.17.0",
+    "@babel/core": "7.17.0",
+    "@babel/preset-react": "7.16.0",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-table": "^7.7.15",
+    "babel-loader": "8.2.0",
+    "css-loader": "^6.8.1",
+    "postcss-loader": "^7.3.3",
+    "postcss-preset-env": "^9.1.3",
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "4.10.0",
+    "webpack-dev-server": "4.11.0"
+  }
+}
