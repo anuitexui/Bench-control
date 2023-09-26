@@ -1,6 +1,13 @@
-import { OptionsProps, allOptions } from "data/dropdownOptions";
+import { useState } from "react";
+import { OptionsProps, allOptions } from "../data/dropdownOptions";
 
-export default function getAllOptions(): Array<Array<OptionsProps>> {
-	const alloptions = allOptions;
+export function getAllOptions(): Array<Array<OptionsProps>> {
+const [ alloptions, setAlloptions ] = useState(allOptions);
+//  const allOptionsCurrentList = allOptionsList;
+//  const setAllOptionsCurrentList = setAllOptionsList;
+	// const alloptions = allOptions;
+
 	return alloptions;
 }
+
+

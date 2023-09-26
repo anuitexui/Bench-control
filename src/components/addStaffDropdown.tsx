@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Dropdown  from 'react-dropdown';
 import Button from "./button";
@@ -27,6 +26,7 @@ function closeTip(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 }
 
  const optionsList = getOptions(optionsId);
+// const optionsList = allOptionsCurrentList[optionsId];
 
 	return<>
 		<label>{label}</label>
