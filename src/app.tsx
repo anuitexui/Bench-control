@@ -1,17 +1,21 @@
 import ReactDOM from "react-dom/client";
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Nav } from "./components/nav";
-import Bench from "./components/tabs/bench";
-import Projects from "./components/tabs/projects";
-import Staff from "./components/tabs/staff";
-import Options from "./components/tabs/options";
-import NotFound from "./components/notfound";
+import { Nav } from "./components/Nav/Nav";
+import Bench from "./components/Tabs/Bench";
+import Projects from "./components/Tabs/Projects";
+import Staff from "./components/Tabs/Staff";
+import Options from "./components/Tabs/Options";
+import NotFound from "./components/NotFound/Notfound";
+import initEmployees from "./utils/InitEmployees";
+import initOptions from "./utils/InitOptions";
 
 import './scss/main.scss';
 
-
 const Root = document.getElementById("app") as HTMLElement;
+//init Employees to Local Storage
+initEmployees();
+//init Options to Local Storage
+initOptions();
 
 ReactDOM.createRoot(
 	Root

@@ -1,6 +1,8 @@
 import React from "react";
-import Button from "./button";
-import { EmployeesProps } from "data/employees";
+import Button from "../Button/Button";
+import { EmployeesProps } from "data/Employees";
+
+import './RemoveConfirm.scss';
 
 interface ConfirmProps {
 	id: number,

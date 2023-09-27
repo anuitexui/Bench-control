@@ -1,7 +1,9 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Column, useTable } from "react-table"
-import Button from "./button";
-import { EmployeesProps } from "../data/employees";
+import Button from "../Button/Button";
+import { EmployeesProps } from "../../data/Employees";
+
+import './EmployeesTable.scss';
 
 interface TableProps {
 	employeesList: Array<EmployeesProps>,

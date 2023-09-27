@@ -1,9 +1,12 @@
-import { OptionsProps, allOptions } from "../data/dropdownOptions";
+import { OptionsProps } from "../data/DropdownOptions";
+import getAllOptions from "./GetAllOptions";
 
-export default function getOptions(querryOptions: number): Array<OptionsProps> {
-	const arrOptions = allOptions;
-	const options = arrOptions[querryOptions];
-	if (options) {
-		return options;
-	} return [];
+export default function getOptions(querryOptions: string): Array<OptionsProps> {
+  const allOptions = getAllOptions();
+  const options = allOptions[querryOptions];
+
+  if (options) {
+    return options;
+  }
+  return [];
 }

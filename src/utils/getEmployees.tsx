@@ -1,6 +1,6 @@
-import { EmployeesProps, employees } from "../data/employees";
+import { EmployeesProps, employees } from "../data/Employees";
 
 export default function getEmplyees(): Array<EmployeesProps> {
-	const employeesList = employees;
+	const employeesList = JSON.parse( localStorage.staff );
 	return employeesList;
 }

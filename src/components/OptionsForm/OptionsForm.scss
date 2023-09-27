@@ -1,0 +1,126 @@
+@import "../../scss/vars";
+
+.form {
+  padding: 0px 0px 15px;
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  &__cell--btns {
+    flex-direction: row;
+  }
+
+  &__title {
+    flex: 1 0 100%;
+    font-weight: 500;
+    font-size: 16px;
+    align-self: center;
+    background: $blue;
+    background: radial-gradient( $blue, #71bdfc);
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+  }
+
+  &__option {
+    flex: 1 0 auto;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  &__inputs {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    width: 100%;
+    padding: 0px 15px;
+
+    .tab__btn--remove {
+      margin-left: 10px;
+      height: 38px;
+      width: 38px;
+      padding: 0px 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: $red;
+      }
+
+      svg {
+        width: 15px;
+        height: 17px;
+      }
+    }
+  }
+
+  .tab__btn--save {
+    margin-left: 10px;
+    height: 38px;
+    width: 60px;
+    padding: 0px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__inputs--add {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    padding: 0px 15px;
+
+    .tab__btn {
+      width: 113px;
+      margin-left: 10px;
+      height: 38px;
+      padding: 5px 0px;
+    }
+  }
+
+  &__inputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__input {
+    border: 1px solid $gray;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 200px;
+    height: 38px;
+    font-size: 16px;
+    transition: 0.2s;
+
+    &::placeholder {
+      color: $textColor;
+      opacity: 0.6;
+    }
+
+    &:hover,
+    &:focus {
+      border: 1px solid $textColor;
+    }
+  }
+  &__input:read-only {
+    background: $background;
+    cursor: auto;
+
+    &:hover,
+    &:focus {
+      border: 1px solid $gray;
+    }
+  }
+
+  &__input.error {
+    border: 1px solid $red;
+    box-shadow: 0px 0px 5px rgb(253, 144, 144);
+  }
+}
