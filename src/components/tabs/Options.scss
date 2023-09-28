@@ -1,0 +1,29 @@
+@import "../../scss/vars";
+
+.tab {
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  &__title {
+    flex: 1 0 100%;
+  }
+
+  &__control-field {
+    display: inline-block;
+    padding: 20px;
+    border: 1px solid $gray;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__option-field {
+    display: inline-block;
+    padding: 20px;
+    border: 1px solid $gray;
+    border-radius: 10px;
+  }
+}

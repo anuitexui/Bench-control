@@ -6,6 +6,8 @@
   border: 1px solid $gray;
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: -3px 3px 10px -5px $textColor;
+  padding: 10px;
 
   table {
     width: 100%;
@@ -16,7 +18,7 @@
   td {
     padding: 5px 8px;
   }
-	
+
   th {
     text-align: left;
   }
@@ -24,6 +26,14 @@
   thead th {
     background-color: $blue;
     padding: 15px 8px;
+
+    &:first-child {
+      border-radius: 10px 0px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 10px 0px 0px;
+    }
   }
 
   tbody tr {
