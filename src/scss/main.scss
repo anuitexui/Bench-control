@@ -43,9 +43,11 @@ body {
       font-size: 16px;
       background-color: $textColor2;
       transition: 0.2s;
+      background-color: $lightyellow;
 
       &:hover {
          background-color: $blue;
+         background-color: $yellow;
       }
    }
 
@@ -54,6 +56,7 @@ body {
       font-weight: 500;
       right: 15px;
       top: 15px;
+      z-index: 10;
 
       &:hover {
          background-color: $blue;
@@ -71,17 +74,19 @@ body {
       font-weight: 500;
       right: 15px;
       top: 15px;
+      z-index: 20;
    }
 
    &__form {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
-      padding: 15px;
+      padding: 25px 15px;
       border: 1px solid $gray;
       border-radius: 10px;
       background: $background;
       align-items: flex-end;
+      z-index: 10;
    }
 
    &__form--edit {

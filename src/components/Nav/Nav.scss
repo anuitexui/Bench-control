@@ -17,6 +17,11 @@
     border-left: 1px solid $gray;
     border-right: 1px solid $gray;
     border-top: 1px solid $gray;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: $lightyellow;
+    }
   }
 
   &__tab.active {

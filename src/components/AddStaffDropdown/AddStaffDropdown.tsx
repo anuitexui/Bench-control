@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import Button from "../Button/Button";
-import getOptions from "../../utils/GetOptions";
+import getAllOptions from "../../utils/GetAllOptions";
 
 import "./AddStaffDropdown.scss";
+
 
 interface DropdownProps {
   optionsName: string;
@@ -33,8 +34,7 @@ export default function AddStaffDropdown({
     setIsTipOpen(false);
   }
 
-  const optionsList = getOptions(optionsName);
-
+  const optionsList = getAllOptions()[optionsName] || [];
   return (
     <>
       <label>{label}</label>
@@ -61,7 +61,7 @@ export default function AddStaffDropdown({
           classname="form__tip-close"
           handleClick={(e) => closeTip(e)}
         />
-        {getOptions(optionsName).map((option) => {
+        {optionsList.map((option) => {
           return (
             <div className="form__tip-row" key={option.id}>
               <b>{option.value}</b> - {option.name}

@@ -15,9 +15,6 @@ export default function Staff() {
   const [employRemoveId, setemployRemoveId] = useState<number>(0);
 
   const employeesList = getEmployees();
-  function addFormToggle() {
-    setIsAddFormOpen(!isAddFormOpen);
-  }
 
   function editFormToggle(id: number) {
     setIsEditFormOpen(!isEditFormOpen);
@@ -33,9 +30,8 @@ export default function Staff() {
     isFormShown: boolean;
   }
 
-  function ShowAddForm({ isFormShown }: IsFormShownProps): JSX.Element | null {
-    const isAddFormShown = isFormShown;
-    if (isAddFormShown) {
+  function ShowAddForm(): JSX.Element | null {
+    if (isAddFormOpen) {
       return (
         <AddStaffForm
           employeesList={employeesList}
@@ -92,9 +88,9 @@ export default function Staff() {
             : "tab__btn tab__btn--add"
         }
         label={isAddFormOpen ? "X" : "Add"}
-        handleClick={addFormToggle}
+        handleClick={() => setIsAddFormOpen(!isAddFormOpen)}
       />
-      <ShowAddForm isFormShown={isAddFormOpen} />
+      <ShowAddForm />
       <EmployeeTable
         employeesList={employeesList}
         employId={editFormToggle}

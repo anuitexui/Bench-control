@@ -12,7 +12,7 @@ export const roles: Array<OptionsProps> = [
   { id: 4, value: "MP", label: "MP", name: "Markup" },
   { id: 5, value: "D", label: "D", name: "Design" },
   { id: 6, value: "BA", label: "BA", name: "BA" },
-  { id: 7, value: "PPM", label: "PPM", name: "Ppre-M" },
+  { id: 7, value: "PM", label: "PM", name: "PM" },
 ];
 
 export const stacks: Array<OptionsProps> = [

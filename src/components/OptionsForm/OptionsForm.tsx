@@ -1,5 +1,4 @@
 import { useState } from "react";
-import getOptions from "../../utils/GetOptions";
 import setOptions from "../../utils/SetOptions";
 import getAllOptions from "../../utils/GetAllOptions";
 import Button from "../Button/Button";
@@ -18,8 +17,8 @@ export default function OptionsForm({
   optionName,
   optionTitle,
 }: OptionsFormProps) {
-  const currentOptionsList = getOptions(optionName);
   const allOptions = getAllOptions();
+  const currentOptionsList = allOptions[optionName] || [] ;
 
   const [optionsList, setOptionsList] = useState<Array<OptionsProps>>(currentOptionsList);
   const [addName, setAddName] = useState<string>("");

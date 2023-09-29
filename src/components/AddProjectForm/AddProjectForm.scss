@@ -1,0 +1,46 @@
+@import "../../scss/vars";
+
+.form {
+	&__row{
+		display: flex;
+		align-items: flex-start;
+		gap: 15px;
+		flex-wrap: wrap;
+		width: 100%;
+		padding: 15px 0px;
+		
+		&:not(:last-child) {
+			border-bottom: 1px solid $gray;
+		}
+	}
+
+	&__subtitle {
+		font-weight: 500;
+		margin-bottom: 15px;
+	}
+
+	&__cell.form__cell--list {
+		padding-left: 35px;
+	}
+
+	&__cell.form__cell--btn {
+		align-self: flex-end;
+		flex: 1 0 auto;
+
+		.tab__btn {
+			max-width: 250px;
+			margin-left: auto;
+		}
+	}
+
+	.tab__btn {
+		margin-top: 15px;
+	}
+}
+
+.tab__form.form {
+	backdrop-filter: blur(2px);
+	background-color: $blueBg;
+	position: absolute;
+	width: calc(100% - 30px);
+}
