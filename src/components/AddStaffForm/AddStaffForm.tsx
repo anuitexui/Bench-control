@@ -6,7 +6,6 @@ import setEmployees from "../../utils/SetEmployees";
 
 import "./AddStaffForm.scss";
 
-
 interface AddStaffFormProps {
   employeesList: Array<EmployeesProps>;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -30,9 +29,15 @@ export default function AddStaffForm({
   const [isEmptySpeak, setIsEmptySpeak] = useState<boolean>(false);
   const [isEmptyTime, setIsEmptyTime] = useState<boolean>(false);
 
-  function saveEmployee(
+  const saveEmployee =(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void {
+  ): void => {
+    staffname ? setIsEmptyname(false) : setIsEmptyname(true);
+    allowedTime ? setIsEmptyTime(false) : setIsEmptyTime(true);
+    staffRole ? setIsEmptyRole(false) : setIsEmptyRole(true);
+    staffStack ? setIsEmptyStack(false) : setIsEmptyStack(true);
+    staffExp ? setIsEmptyExp(false) : setIsEmptyExp(true);
+    staffSpeak ? setIsEmptySpeak(false) : setIsEmptySpeak(true);
     if (
       staffname &&
       staffRole &&
@@ -58,20 +63,13 @@ export default function AddStaffForm({
           speak: staffSpeak,
           time: allowedTime,
         },
-      ]
+      ];
       setEmployees(newEmployeesList);
       closeForm(e);
-    } else {
-      staffname ? setIsEmptyname(false) : setIsEmptyname(true);
-      allowedTime ? setIsEmptyTime(false) : setIsEmptyTime(true);
-      staffRole ? setIsEmptyRole(false) : setIsEmptyRole(true);
-      staffStack ? setIsEmptyStack(false) : setIsEmptyStack(true);
-      staffExp ? setIsEmptyExp(false) : setIsEmptyExp(true);
-      staffSpeak ? setIsEmptySpeak(false) : setIsEmptySpeak(true);
     }
   }
 
-  function validateTime(e: React.KeyboardEvent<HTMLInputElement>) {
+  const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
       e.keyCode == 46 ||
       e.keyCode == 8 ||
@@ -86,7 +84,7 @@ export default function AddStaffForm({
     }
   }
 
-  function setTime(e: React.ChangeEvent<HTMLInputElement>) {
+  const setTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (+e.target.value > 40) {
       setAllowedTime(() => 40);
     } else if (e.target.value.length > 1) {

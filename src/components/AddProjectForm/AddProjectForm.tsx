@@ -4,11 +4,15 @@ import { ProjectStaffProps } from "../../data/Projects";
 import ProjectStaffList from "../ProjectStaffList/ProjectStaffList";
 import InputAutoStaff from "../InputAuto/InputAutoStaff";
 import getEmplyees from "../../utils/GetEmployees";
+import { ProjectProps } from "../../data/Projects";
+import setProjects from "../../utils/SetProjects";
 
 import "./AddProjectForm.scss";
 
 interface AddProjectFormProps {
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  projectsList: Array<ProjectProps>,
+	// setProjectsList: (list: Array<ProjectProps>) => void,
 }
 
 interface AddStaffprops {
@@ -18,6 +22,8 @@ interface AddStaffprops {
 
 export default function AddProjectForm({
   closeForm,
+  projectsList,
+  // setProjectsList,
 }: AddProjectFormProps): JSX.Element {
   const [projectName, setProjectName] = useState<string>("");
   const [leadName, setLeadName] = useState<string>("");
@@ -40,9 +46,13 @@ export default function AddProjectForm({
   const [isLeadEmpty, setIsLeadEmpty] = useState<boolean>(false);
   const [isBAEmpty, setIsBAEmpty] = useState<boolean>(false);
   const [isPMEmpty, setIsPMEmpty] = useState<boolean>(false);
-  const [isEmptyInput, setIsEmptyInput] = useState<boolean>(false);
-  const [isStartInput, setIsStartInput] = useState<boolean>(false);
-  const [isEndInput, setIsEndInput] = useState<boolean>(false);
+  const [isDevsEmpty, setIsDevsEmpty] = useState<boolean>(false);
+  const [isQAsEmpty, setIsQAsEmpty] = useState<boolean>(false);
+  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
+  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
+
+  const [clearDev, setClearDev] = useState<boolean>(false);
+  const [clearQA, setClearQA] = useState<boolean>(false);
 
   const staff = getEmplyees();
   const devs = staff.filter((employ) => employ.pos.toLowerCase() == "dev");
@@ -79,6 +89,8 @@ export default function AddProjectForm({
   }
 
   const addDev = () => {
+    start ? setIsStartEmpty(false) : setIsStartEmpty(true);
+    end ? setIsEndEmpty(false) : setIsEndEmpty(true);
     if (start && end) {
       const newDevList = [
         ...devList,
@@ -92,37 +104,73 @@ export default function AddProjectForm({
         },
       ];
       setDevList(newDevList);
-    setQAName("23");
-    } else {
-      start ? setIsStartInput(false) : setIsStartInput(true);
-      end ? setIsEndInput(false) : setIsEndInput(true);
+      setClearDev(() => true);
     }
   };
 
   const addQA = () => {
+    start ? setIsStartEmpty(false) : setIsStartEmpty(true);
+    end ? setIsEndEmpty(false) : setIsEndEmpty(true);
     if (start && end) {
-    const newQAList = [
-      ...qaList,
-      {
-        id: staff.filter((s) => s.name == qaName)[0]!.id,
-        name: qaName,
-        time: qaTime,
-        start: start,
-        end: end,
-        billingType: "B",
-      },
-    ];
-    setQAList(newQAList);
-    setQAName("");
-  } else {
-    start ? setIsStartInput(false) : setIsStartInput(true);
-    end ? setIsEndInput(false) : setIsEndInput(true);
-  }
+      const newQAList = [
+        ...qaList,
+        {
+          id: staff.filter((s) => s.name == qaName)[0]!.id,
+          name: qaName,
+          time: qaTime,
+          start: start,
+          end: end,
+          billingType: "B",
+        },
+      ];
+      setQAList(newQAList);
+      setClearQA(() => true);
+    }
   };
 
-  const saveProject = () => {
+  const saveProject = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    projectName ? setIsNameEmpty(false) : setIsNameEmpty(true);
+    leadName ? setIsLeadEmpty(false) : setIsLeadEmpty(true);
+    baName ? setIsBAEmpty(false) : setIsBAEmpty(true);
+    pmName ? setIsPMEmpty(false) : setIsPMEmpty(true);
+    start ? setIsStartEmpty(false) : setIsStartEmpty(true);
+    end ? setIsEndEmpty(false) : setIsEndEmpty(true);
+    devList.length ? setIsDevsEmpty(false) : setIsDevsEmpty(true);
+    qaList.length ? setIsQAsEmpty(false) : setIsQAsEmpty(true);
+    if (projectName && leadName && baName && pmName && start && end && devList.length && qaList.length) {
+      //new project ID
+      let ids: Array<number> = [];
+      for (let project of projectsList) {
+        ids.push(project.id);
+      }
+      let newId = Math.max.apply(null, ids) + 1;
 
-  }
+      // staff IDs:
+      const leadID: number = staff.filter((employ) => employ.name == leadName)[0]?.id || 0;
+      const baID: number = staff.filter((employ) => employ.name == baName)[0]?.id || 0;
+      const pmID: number = staff.filter((employ) => employ.name == pmName)[0]?.id || 0;
+
+      const newProjectsList: Array<ProjectProps> = [
+        ...projectsList,
+        {
+          id: newId,
+          name: projectName,
+          lead : {id: leadID, name: leadName, time: leadTime, start: start, end: end, billingType: "B"},
+          ba : {id: baID, name: baName, time: baTime, start: start, end: end, billingType: "B"},
+          pm : {id: pmID, name: pmName, time: pmTime, start: start, end: end, billingType: "B"},
+          start: start,
+          end: end,
+          devs: devList,
+          qas: qaList,
+          isActive: true,
+        },
+      ];
+      // setProjectsList(newProjectsList);
+      console.log(newProjectsList);
+      setProjects(newProjectsList)
+      closeForm(e);
+    }
+  };
 
   return (
     <form className="tab__form form" onSubmit={(e) => e.preventDefault()}>
@@ -152,7 +200,7 @@ export default function AddProjectForm({
           <input
             name="lead-time"
             placeholder="Time"
-            className={isEmptyInput ? "form__input error" : "form__input"}
+            className={isLeadEmpty ? "form__input error" : "form__input"}
             min={0}
             max={40}
             type="text"
@@ -177,7 +225,7 @@ export default function AddProjectForm({
           <input
             name="ba-time"
             placeholder="Time"
-            className={isEmptyInput ? "form__input error" : "form__input"}
+            className={isBAEmpty ? "form__input error" : "form__input"}
             min={0}
             max={40}
             type="text"
@@ -202,7 +250,7 @@ export default function AddProjectForm({
           <input
             name="pm-time"
             placeholder="Time"
-            className={isEmptyInput ? "form__input error" : "form__input"}
+            className={isPMEmpty ? "form__input error" : "form__input"}
             min={0}
             max={40}
             type="text"
@@ -219,7 +267,7 @@ export default function AddProjectForm({
           <label htmlFor="start">Start At:</label>
           <input
             name="start"
-            className={isStartInput ? "form__input error" : "form__input"}
+            className={isStartEmpty ? "form__input error" : "form__input"}
             type="date"
             value={start}
             onChange={(e) => {
@@ -229,7 +277,7 @@ export default function AddProjectForm({
           <label htmlFor="start">End At:</label>
           <input
             name="start"
-            className={isEndInput ? "form__input error" : "form__input"}
+            className={isEndEmpty ? "form__input error" : "form__input"}
             type="date"
             value={end}
             onChange={(e) => {
@@ -247,20 +295,21 @@ export default function AddProjectForm({
           <p className="form__subtitle">Adding Dev:</p>
 
           <InputAutoStaff
-            classname={isEmptyInput ? "form__input error" : "form__input"}
+            classname={isDevsEmpty ? "form__input error" : "form__input"}
             label="Name:"
             pholder={"Dev Name"}
             data={devs}
             onSelected={setDevName}
             currentData={devList}
-            // clear={}
+            clear={clearDev}
+            setClear={setClearDev}
           />
 
           <label htmlFor="dev-time">Hour Per Week:</label>
           <input
             name="dev-time"
             placeholder="Time"
-            className={isEmptyInput ? "form__input error" : "form__input"}
+            className={isDevsEmpty ? "form__input error" : "form__input"}
             min={0}
             max={40}
             type="text"
@@ -281,19 +330,21 @@ export default function AddProjectForm({
         <div className="form__cell">
           <p className="form__subtitle">Adding QA:</p>
           <InputAutoStaff
-            classname={isEmptyInput ? "form__input error" : "form__input"}
+            classname={isQAsEmpty ? "form__input error" : "form__input"}
             label="Name:"
             pholder={"QA Name"}
             data={qas}
             onSelected={setQAName}
             currentData={qaList}
+            clear={clearQA}
+            setClear={setClearQA}
           />
 
           <label htmlFor="qa-time">Hour Per Week:</label>
           <input
             name="qa-time"
             placeholder="Time"
-            className={isEmptyInput ? "form__input error" : "form__input"}
+            className={isQAsEmpty ? "form__input error" : "form__input"}
             min={0}
             max={40}
             type="text"
@@ -308,7 +359,11 @@ export default function AddProjectForm({
           <Button classname="tab__btn" label="Add" handleClick={addQA} />
         </div>
         <div className="form__cell form__cell--btn">
-            <Button classname="tab__btn" handleClick={saveProject} label="Save Project" />
+          <Button
+            classname="tab__btn"
+            handleClick={saveProject}
+            label="Save Project"
+          />
         </div>
       </div>
     </form>

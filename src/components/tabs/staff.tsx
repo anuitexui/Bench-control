@@ -10,27 +10,24 @@ import setEmployees from "../../utils/SetEmployees";
 export default function Staff() {
   const [isAddFormOpen, setIsAddFormOpen] = useState<boolean>(false);
   const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
-  const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] = useState<boolean>(false);
+  const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] =
+    useState<boolean>(false);
   const [employeeEditId, setEmployeeEditId] = useState<number>(0);
   const [employRemoveId, setemployRemoveId] = useState<number>(0);
 
   const employeesList = getEmployees();
 
-  function editFormToggle(id: number) {
+  const editFormToggle = (id: number) => {
     setIsEditFormOpen(!isEditFormOpen);
     setEmployeeEditId(id);
-  }
+  };
 
-  function removeConfirmToggle(id: number) {
+  const removeConfirmToggle = (id: number) => {
     setIsRemoveConfirmOpen(!isRemoveConfirmOpen);
     setemployRemoveId(id);
-  }
+  };
 
-  interface IsFormShownProps {
-    isFormShown: boolean;
-  }
-
-  function ShowAddForm(): JSX.Element | null {
+  const ShowAddForm = (): JSX.Element | null => {
     if (isAddFormOpen) {
       return (
         <AddStaffForm
@@ -40,11 +37,10 @@ export default function Staff() {
       );
     }
     return null;
-  }
+  };
 
-  function ShowEditForm({ isFormShown }: IsFormShownProps): JSX.Element | null {
-    const isEditFormShown = isFormShown;
-    if (isEditFormShown) {
+  function ShowEditForm(): JSX.Element | null {
+    if (isEditFormOpen) {
       return (
         <EditStaffForm
           employeesList={employeesList}
@@ -57,17 +53,17 @@ export default function Staff() {
     return null;
   }
 
-  function ShowRemoveConfirm({
-    isFormShown,
-  }: IsFormShownProps): JSX.Element | null {
-    const isRemoveConfirmShown = isFormShown;
-    if (isRemoveConfirmShown) {
+  function ShowRemoveConfirm(): JSX.Element | null {
+    if (isRemoveConfirmOpen) {
+      const employ = employeesList.find(
+        (employee) => employee.id == employRemoveId
+      );
+      const currentName = employ ? employ.name : "";
       return (
         <RemoveConfirm
-          id={employRemoveId}
-          employeesList={employeesList}
-          closeConfirm={() => setIsRemoveConfirmOpen(false)}
-          removeEmploy={() => employRemove(employRemoveId)}
+          name={currentName}
+          cancel={() => setIsRemoveConfirmOpen(false)}
+          remove={() => employRemove(employRemoveId)}
         />
       );
     }
@@ -96,8 +92,8 @@ export default function Staff() {
         employId={editFormToggle}
         employRemove={removeConfirmToggle}
       />
-      <ShowEditForm isFormShown={isEditFormOpen} />
-      <ShowRemoveConfirm isFormShown={isRemoveConfirmOpen} />
+      <ShowEditForm />
+      <ShowRemoveConfirm />
     </div>
   );
 }

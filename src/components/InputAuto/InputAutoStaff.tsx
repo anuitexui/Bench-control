@@ -11,7 +11,8 @@ interface InputAutoStaffProps {
   data: Array<EmployeesProps>;
   onSelected: any;
   currentData?: Array<ProjectStaffProps>;
-  clear?: any;
+  clear?: boolean;
+  setClear?: (clear: boolean) => void;
 }
 
 export default function InputAutoStaff({
@@ -22,12 +23,16 @@ export default function InputAutoStaff({
   onSelected,
   currentData,
   clear,
+  setClear,
 }: InputAutoStaffProps) {
   const [suggestions, setSugesstions] = useState<Array<string>>([]);
   const [isHideSuggs, setIsHideSuggs] = useState(false);
   const [selectedVal, setSelectedVal] = useState("");
-
+// clear = true;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (setClear) {
+      setClear(false);
+    }
     const input = e.target.value;
     setIsHideSuggs(true);
     setSelectedVal(input);
@@ -55,9 +60,9 @@ export default function InputAutoStaff({
     setIsHideSuggs(false);
   };
 
-  clear = () => {
-    setSelectedVal("");
-  } 
+  // clear = () => {
+  //   setSelectedVal("");
+  // } 
 
   return (
     <div className="form__input-auto">
@@ -67,7 +72,7 @@ export default function InputAutoStaff({
           placeholder={pholder}
           className={classname}
           type="search"
-          value={selectedVal}
+          value={clear ? "" : selectedVal}
           onChange={(e) => handleChange(e)}
         />
       </div>

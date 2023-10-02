@@ -37,7 +37,7 @@ export default function EditStaffForm({
     employ ? employ.time : 40
   );
 
-  function saveEdit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  const saveEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     const editedEmploy = employeesList.map((employ) => {
@@ -57,7 +57,7 @@ export default function EditStaffForm({
     isFormOpen(false);
   }
 
-  function validateTime(e: React.KeyboardEvent<HTMLInputElement>) {
+  const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
       e.keyCode == 46 ||
       e.keyCode == 8 ||
@@ -72,7 +72,7 @@ export default function EditStaffForm({
     }
   }
 
-  function setTime(e: React.ChangeEvent<HTMLInputElement>) {
+  const setTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (+e.target.value > 40) {
       setAllowedTime(() => 40);
     } else if (e.target.value.length > 1) {

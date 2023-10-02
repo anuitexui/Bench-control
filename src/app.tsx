@@ -8,6 +8,7 @@ import Options from "./components/Tabs/Options";
 import NotFound from "./components/NotFound/Notfound";
 import initEmployees from "./utils/InitEmployees";
 import initOptions from "./utils/InitOptions";
+import initProjects from "./utils/InitProjects";
 
 import './scss/main.scss';
 
@@ -16,6 +17,8 @@ const Root = document.getElementById("app") as HTMLElement;
 initEmployees();
 //init Options to Local Storage
 initOptions();
+//init Projects to Local Storage
+initProjects();
 
 ReactDOM.createRoot(
 	Root

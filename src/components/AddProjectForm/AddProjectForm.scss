@@ -39,7 +39,7 @@
 }
 
 .tab__form.form {
-	backdrop-filter: blur(2px);
+	backdrop-filter: blur(8px);
 	background-color: $blueBg;
 	position: absolute;
 	width: calc(100% - 30px);
