@@ -38,7 +38,7 @@ export const projects: Array<ProjectProps> = [
       time: 17,
       start: "2023-09-12",
       end: "2023-10-12",
-      billingType: "B",
+      billingType: "UB",
     },
     pm: {
       id: 11,

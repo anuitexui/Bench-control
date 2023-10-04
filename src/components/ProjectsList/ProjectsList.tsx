@@ -1,8 +1,8 @@
 import setProjects from "../../utils/SetProjects";
-import { ProjectProps } from "../../data/Projects";
 import { useState } from "react";
 import getProjects from "../../utils/GetProjects";
 import Button from "../Button/Button";
+import InputCheckBox from "../InputCheckbox/InputCheckbox";
 
 import "./ProjectsList.scss";
 
@@ -46,16 +46,14 @@ export default function ProjectsList({
             >
               <div className="project__head">
                 <p className="project__title">{project.name}</p>
-                <label className="project__switch">
-                  <input
-                    type="checkbox"
-                    onChange={() => changeActive(project.id, project.isActive)}
-                    checked={project.isActive}
-                    className="project__switch-input"
-                  />
-                  <span className="project__switch-label">Active:</span>
-                  <span className="project__switch-thumb"></span>
-                </label>
+                <InputCheckBox
+                  classname="project__switch"
+                  checked={project.isActive}
+                  handleChange={() =>
+                    changeActive(project.id, project.isActive)
+                  }
+                  label="Active:"
+                />
               </div>
               <div className="project__body">
                 <p className="project__info">
@@ -93,9 +91,9 @@ export default function ProjectsList({
                     return (
                       <div className="project__list-item" key={dev.id}>
                         <span className="project__label">Dev:</span>
-                        <p>{dev.name}</p>
-                        <p>{dev.time}h</p>
-                        <p>Type: {dev.billingType}</p>
+                        <p className="project__list-name">{dev.name}</p>
+                        <p className="project__list-time">{dev.time}h</p>
+                        <p className="project__list-type">Type: {dev.billingType}</p>
                       </div>
                     );
                   })}
@@ -105,9 +103,9 @@ export default function ProjectsList({
                     return (
                       <div className="project__list-item" key={qa.id}>
                         <span className="project__label">QA:</span>
-                        <p>{qa.name}</p>
-                        <p>{qa.time}h</p>
-                        <p>Type: {qa.billingType}</p>
+                        <p className="project__list-name">{qa.name}</p>
+                        <p className="project__list-time">{qa.time}h</p>
+                        <p className="project__list-type">Type: {qa.billingType}</p>
                       </div>
                     );
                   })}

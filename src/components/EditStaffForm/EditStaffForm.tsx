@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import AddStaffDropdown from "../AddStaffDropdown/AddStaffDropdown";
 import Button from "../Button/Button";
 import { EmployeesProps } from "data/Employees";
+import setEmployees from "../../utils/SetEmployees";
 
 import "./EditStaffForm.scss";
-import setEmployees from "../../utils/SetEmployees";
 
 interface FormProps {
   id: number;
@@ -83,7 +83,7 @@ export default function EditStaffForm({
   }
 
   return (
-    <form className="tab__form tab__form--edit form">
+    <form className="tab__form tab__form-edit form">
       <div className="form__cell">
         <label htmlFor="name">Name:</label>
         <input

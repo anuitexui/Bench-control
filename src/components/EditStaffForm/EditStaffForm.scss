@@ -91,3 +91,28 @@
     color: $textColor2;
   }
 }
+
+.tab__form.tab__form-edit {
+  background: transparent;
+  backdrop-filter: none;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: 95%;
+  transform: translateX(-50%);
+  border: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+    background-color: $blueBg;
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    border: 1px solid $gray;
+  }
+}

@@ -1,4 +1,4 @@
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { EmployeesProps } from "../../data/Employees";
 import { ProjectStaffProps } from "../../data/Projects";
 
@@ -13,6 +13,7 @@ interface InputAutoStaffProps {
   currentData?: Array<ProjectStaffProps>;
   clear?: boolean;
   setClear?: (clear: boolean) => void;
+  defaultValue?: string;
 }
 
 export default function InputAutoStaff({
@@ -24,11 +25,20 @@ export default function InputAutoStaff({
   currentData,
   clear,
   setClear,
+  defaultValue,
 }: InputAutoStaffProps) {
   const [suggestions, setSugesstions] = useState<Array<string>>([]);
   const [isHideSuggs, setIsHideSuggs] = useState(false);
-  const [selectedVal, setSelectedVal] = useState("");
-// clear = true;
+  const [selectedVal, setSelectedVal] = useState(
+    defaultValue ? defaultValue : ""
+  );
+
+  const clickOut = (e: { target: any }) => {
+    if (!e.target.classList.contains(classname)) {
+      setIsHideSuggs(false);
+      document.removeEventListener("click", clickOut);
+    }
+  };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setClear) {
       setClear(false);
@@ -36,11 +46,12 @@ export default function InputAutoStaff({
     const input = e.target.value;
     setIsHideSuggs(true);
     setSelectedVal(input);
-    
+
+    document.addEventListener("click", clickOut);
     let newData: Array<EmployeesProps> = data;
     if (currentData && currentData.length) {
-      for (let i = 0; currentData.length > i; i++ ) {
-      newData = newData.filter((employ) => employ.id !== currentData[i]!.id);
+      for (let i = 0; currentData.length > i; i++) {
+        newData = newData.filter((employ) => employ.id !== currentData[i]!.id);
       }
     }
     const newsuggest: Array<string> = [];
@@ -59,10 +70,6 @@ export default function InputAutoStaff({
     setSelectedVal(value);
     setIsHideSuggs(false);
   };
-
-  // clear = () => {
-  //   setSelectedVal("");
-  // } 
 
   return (
     <div className="form__input-auto">

@@ -5,12 +5,15 @@ import ProjectsList from "../ProjectsList/ProjectsList";
 import getProjects from "../../utils/GetProjects";
 import RemoveConfirm from "../RemoveConfirm/RemoveConfirm";
 import setProjects from "../../utils/SetProjects";
+import EditProjectForm from "../EditProjectForm/EditProjectForm";
 
 export default function Projects() {
   const projects = getProjects();
 
   const [isAddFormOpen, setIsAddFormOpen] = useState<boolean>(false);
+  const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
   const [isRemoveFormOpen, setIsRemoveFormOpen] = useState<boolean>(false);
+  const [projectEditId, setProjectEditId] = useState<number>(0);
   const [removeProjectID, setRemoveProjectID] = useState<number>(0);
 
   const ShowAddForm = (): JSX.Element | null => {
@@ -25,7 +28,22 @@ export default function Projects() {
     return null;
   };
 
-  const projectEdit = (id: number) => {};
+  const editFormToggle = (id: number) => {
+    setIsEditFormOpen(!isEditFormOpen);
+    setProjectEditId(id);
+  };
+
+  const ShowEditForm = (): JSX.Element | null => {
+    if (isEditFormOpen) {
+      return (
+        <EditProjectForm
+          id={projectEditId}
+          closeForm={() => setIsEditFormOpen(false)}
+        />
+      );
+    }
+    return null;
+  };
 
   const projectDeleteConfirm = (id: number) => {
     setRemoveProjectID(id);
@@ -66,9 +84,10 @@ export default function Projects() {
       />
       <ShowAddForm />
       <ProjectsList
-        projectEdit={projectEdit}
+        projectEdit={editFormToggle}
         projectDelete={projectDeleteConfirm}
       />
+      <ShowEditForm />
       <ShowDeleteForm />
     </div>
   );
