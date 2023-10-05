@@ -33,5 +33,11 @@
 		background: transparent;
 		color: $red;
 		font-weight: 600;
+		text-shadow: 0px 0px 0px $textColor;
+		transition: 0.2s;
+
+		&:hover {
+			font-size: 18px;
+		}
 	}
 }

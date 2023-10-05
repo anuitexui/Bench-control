@@ -1,0 +1,9 @@
+@import '../../scss/vars';
+
+.bench-table {
+	&__placeholder{
+		font-size: 16px;
+		text-align: center;
+		padding: 15px;
+	}
+}

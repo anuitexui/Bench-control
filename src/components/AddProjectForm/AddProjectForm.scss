@@ -19,6 +19,12 @@
     &__col {
       display: flex;
       gap: 20px;
+
+       @media (max-width: 1168px) {
+        flex: 1 0 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
 
     &__cell {
@@ -50,6 +56,11 @@
       gap: 20px;
       flex-direction: row;
       flex: 1 0 auto;
+
+      @media (max-width: 1314px) {
+        flex: 1 0 100%;
+        justify-content: center;
+      }
 
       .tab__btn--add-proj {
         max-width: 250px;

@@ -27,7 +27,8 @@
   .form {
 		&__title {
 			flex: 1 0 100%;
-			font-weight: 18px;
+			font-size: 18px;
+      padding-left: 50px;
 		}
     &__row {
       justify-content: space-around;

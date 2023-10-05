@@ -3,6 +3,13 @@
 .header {
   &__menu {
     margin: 15px 15px 0px;
+    display: flex;
+
+    @media (max-width: 650px) {
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
   }
 
   &__tab {
@@ -19,6 +26,11 @@
     border-top: 1px solid $gray;
     transition: 0.3s;
 
+    @media (max-width: 650px) {
+      border-radius: 10px;
+      border: 1px solid $gray;
+    }
+
     &:hover {
       background-color: $lightyellow;
     }
@@ -29,5 +41,9 @@
     font-weight: 500;
     border-bottom: 1px solid $textColor2;
     z-index: 10;
+
+    @media (max-width: 650px) {
+      border: 1px solid $gray;
+    }
   }
 }

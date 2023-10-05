@@ -10,8 +10,7 @@ import setEmployees from "../../utils/SetEmployees";
 export default function Staff() {
   const [isAddFormOpen, setIsAddFormOpen] = useState<boolean>(false);
   const [isEditFormOpen, setIsEditFormOpen] = useState<boolean>(false);
-  const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] =
-    useState<boolean>(false);
+  const [isRemoveConfirmOpen, setIsRemoveConfirmOpen] = useState<boolean>(false);
   const [employeeEditId, setEmployeeEditId] = useState<number>(0);
   const [employRemoveId, setemployRemoveId] = useState<number>(0);
 

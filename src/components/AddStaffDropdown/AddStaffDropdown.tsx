@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import Button from "../Button/Button";
 import getAllOptions from "../../utils/GetAllOptions";
+import Tooltips from "../Tooltips/Tooltips";
 
 import "./AddStaffDropdown.scss";
-
 
 interface DropdownProps {
   optionsName: string;
@@ -24,24 +24,44 @@ export default function AddStaffDropdown({
   handleChange,
 }: DropdownProps): JSX.Element {
   const [isTipOpen, setIsTipOpen] = useState<boolean>(false);
-  function showTip(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    setIsTipOpen(!isTipOpen);
-  }
-
-  function closeTip(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    setIsTipOpen(false);
-  }
-
+  const [btnPosition, setBtnPostion] = useState<number>(0);
   const optionsList = getAllOptions()[optionsName] || [];
+
+  const closeTip = () => {
+    setIsTipOpen(false);
+  };
+
+  const openTooltip = (e: any) => {
+    e.preventDefault();
+    setBtnPostion(e.target.getBoundingClientRect().right);
+    setIsTipOpen(true);
+  };
+
+  const ShowTooltip = () => {
+    if (isTipOpen) {
+      return (
+        <Tooltips
+          closeTip={closeTip}
+          btnPosition={btnPosition}
+          children={optionsList.map((option) => {
+            return (
+              <div className="form__tip-row" key={option.id}>
+                <b>{option.value}</b> - {option.name}
+              </div>
+            );
+          })}
+        />
+      );
+    } else return null;
+  };
+
   return (
     <>
       <label>{label}</label>
       <Button
         classname="form__tip-btn"
         label="?"
-        handleClick={(e) => showTip(e)}
+        handleClick={(e) => openTooltip(e)}
       />
       <Dropdown
         options={optionsList}
@@ -55,20 +75,7 @@ export default function AddStaffDropdown({
         placeholderClassName="dropdown__placeholder"
         onChange={handleChange}
       />
-      <div className={isTipOpen ? "form__tip open" : "form__tip "}>
-        <Button
-          label="x"
-          classname="form__tip-close"
-          handleClick={(e) => closeTip(e)}
-        />
-        {optionsList.map((option) => {
-          return (
-            <div className="form__tip-row" key={option.id}>
-              <b>{option.value}</b> - {option.name}
-            </div>
-          );
-        })}
-      </div>
+      <ShowTooltip />
     </>
   );
 }
