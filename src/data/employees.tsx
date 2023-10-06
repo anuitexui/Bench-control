@@ -135,4 +135,22 @@ export const employees: Array<EmployeesProps> = [
     speak: "SFS",
     time: 40,
   },
+  {
+    id: 15,
+    name: "Valerij Valerenko",
+    pos: "PM",
+    stack: "PM",
+    exp: "LM",
+    speak: "CL",
+    time: 40,
+  },
+  {
+    id: 16,
+    name: "Boris Johnsonyk",
+    pos: "BA",
+    stack: "BA",
+    exp: "MM",
+    speak: "FS",
+    time: 40,
+  },
 ];

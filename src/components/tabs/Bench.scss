@@ -7,6 +7,21 @@
       width: 100%;
 			gap: 30px;
 			padding: 15px;
+			background: $background;
+			border-radius: 10px;
+			border: 1px solid $gray;
+
+			.tooltip{
+				width: 200px;
+				background: $background;
+				top: 0px;
+				span{
+					font-weight: 600;
+				}
+				p{
+					padding: 6px 0px;
+				}
+			}
     }
 
     &__actions-search {
@@ -17,6 +32,15 @@
 				width: 250px;
       }
     }
+
+		&__actions-dropdown {
+			position: relative;
+			.form__tip-btn {
+				z-index: 10;
+				right: -8px;
+    		top: -10px;
+			}
+		}
 
     &__actions-icon {
       position: absolute;
@@ -30,6 +54,10 @@
         fill: $blue2;
       }
     }
+
+		&__table {
+			margin-top: 0px;
+		}
   }
 	.dropdown {
 		position: relative;
@@ -164,6 +192,53 @@
 			}
 			&:hover {
 				background: $blue;
+			}
+		}
+
+		&__option{
+			position: relative;
+			&:before {
+				content: '';
+				position: absolute;
+				right: 10px;
+				top: 50%;
+				transform: translateY(-50%);
+				border: 1px solid $textColor;
+				border-radius: 50%;
+				width: 15px;
+				height: 15px;
+				opacity: 0.6;
+				transition: 0.3s;
+			}
+
+			&:hover {
+				&:before {
+					opacity: 1;
+				}
+			}
+		}
+
+		&__option--red{
+			&:before {
+				background: rgba(255, 39, 39);
+			}
+		}
+
+		&__option--yellow{
+			&:before {
+				background: rgba(255, 255, 108);
+			}
+		}
+
+		&__option--grey{
+			&:before {
+				background: rgba(122, 122, 122);
+			}
+		}
+
+		&__option--green{
+			&:before {
+				background: rgba(13, 138, 13);
 			}
 		}
 	}
