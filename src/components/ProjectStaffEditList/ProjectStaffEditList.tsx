@@ -1,18 +1,26 @@
-import { ProjectStaffProps } from "../../data/Projects";
-import { ChangeEvent } from "react";
+import { EmployeesProps } from "../../data/Employees";
+import { ProjectProps, ProjectStaffProps } from "../../data/Projects";
 import ProjectStaffInputs from "../ProjectStaffInputs/ProjectStaffInputs";
 
 import "./ProjectStaffEditList.scss";
 
 interface ProjectStaffEditListProps {
-  staffList: Array<ProjectStaffProps>;
-	setStaffList : (list: Array<ProjectStaffProps>) => void;
+  projectID: number,
+  allStaffList: Array<EmployeesProps>,
+  staffList: Array<ProjectStaffProps>,
+	setStaffList: (list: Array<ProjectStaffProps>) => void,
+  projectsList: Array<ProjectProps>,
 }
 
 export default function ProjectStaffEditList({
+  projectID,
   staffList,
 	setStaffList,
+  projectsList,
+  allStaffList,
 }: ProjectStaffEditListProps): JSX.Element {
+
+  const otherProjectsList = projectsList.filter((project) => project.id !== projectID);
 
 	const remove = (id: number) => {
 		setStaffList(staffList.filter((employ) => employ.id !== id));
@@ -53,7 +61,7 @@ export default function ProjectStaffEditList({
           {staffList.map((staff) => {
             return (
               <p className="form__list-row" key={staff.id}>
-								<ProjectStaffInputs staff={staff} remove={remove} changeStaffType={changeStaffType} changeStaffTime={changeStaffTime} />
+								<ProjectStaffInputs allStaffList={allStaffList} staff={staff} remove={remove} changeStaffType={changeStaffType} changeStaffTime={changeStaffTime} projectsList={otherProjectsList}/>
               </p>
             );
           })}

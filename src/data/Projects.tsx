@@ -80,7 +80,7 @@ export const projects: Array<ProjectProps> = [
       {
         id: 3,
         name: "Nadia Nadiyko",
-        time: 40,
+        time: 30,
         start: "2023-09-12",
         end: "2023-10-12",
         billingType: "B",
@@ -121,7 +121,7 @@ export const projects: Array<ProjectProps> = [
       {
         id: 13,
         name: "Mark Markov",
-        time: 40,
+        time: 20,
         start: "2023-09-12",
         end: "2023-10-12",
         billingType: "B",

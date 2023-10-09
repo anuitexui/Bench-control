@@ -1,6 +1,7 @@
 import { ChangeEvent, SetStateAction, useState } from "react";
 import { EmployeesProps } from "../../data/Employees";
-import { ProjectStaffProps } from "../../data/Projects";
+import { ProjectProps, ProjectStaffProps } from "../../data/Projects";
+import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
 
 import "./InputAutoStaff.scss";
 
@@ -14,6 +15,9 @@ interface InputAutoStaffProps {
   clear?: boolean;
   setClear?: (clear: boolean) => void;
   defaultValue?: string;
+  projects?: Array<ProjectProps>,
+  setFreeTime?: (time: number) => void,
+  setMaxFreeTime?: (time: number) => void, 
 }
 
 export default function InputAutoStaff({
@@ -26,6 +30,9 @@ export default function InputAutoStaff({
   clear,
   setClear,
   defaultValue,
+  projects,
+  setFreeTime,
+  setMaxFreeTime,
 }: InputAutoStaffProps) {
   const [suggestions, setSugesstions] = useState<Array<string>>([]);
   const [isHideSuggs, setIsHideSuggs] = useState(false);
@@ -39,6 +46,9 @@ export default function InputAutoStaff({
       document.removeEventListener("click", clickOut);
     }
   };
+  
+  let newData: Array<EmployeesProps> = data;
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setClear) {
       setClear(false);
@@ -48,7 +58,7 @@ export default function InputAutoStaff({
     setSelectedVal(input);
 
     document.addEventListener("click", clickOut);
-    let newData: Array<EmployeesProps> = data;
+    
     if (currentData && currentData.length) {
       for (let i = 0; currentData.length > i; i++) {
         newData = newData.filter((employ) => employ.id !== currentData[i]!.id);
@@ -69,6 +79,16 @@ export default function InputAutoStaff({
     onSelected(value);
     setSelectedVal(value);
     setIsHideSuggs(false);
+
+    if (projects?.length && setFreeTime && setMaxFreeTime) {
+      const employ = newData.filter((employ) => employ.name == value)[0];
+      const id = employ ? employ.id : 0;
+      const time = employ ? employ.time : 0;
+      const freeTime = time - getStaffProjectsTime(id, projects, "B");
+      setFreeTime(freeTime);
+      setMaxFreeTime(freeTime);
+      console.log(freeTime);
+    }
   };
 
   return (

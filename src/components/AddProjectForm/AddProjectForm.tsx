@@ -10,13 +10,8 @@ import setProjects from "../../utils/SetProjects";
 import "./AddProjectForm.scss";
 
 interface AddProjectFormProps {
-  closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  projectsList: Array<ProjectProps>;
-}
-
-interface AddStaffprops {
-  staffName: "string";
-  staffList: (list: Array<ProjectStaffProps>) => void;
+  closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  projectsList: Array<ProjectProps>,
 }
 
 export default function AddProjectForm({
@@ -27,16 +22,21 @@ AddProjectFormProps): JSX.Element {
   const [projectName, setProjectName] = useState<string>("");
   const [leadName, setLeadName] = useState<string>("");
   const [leadTime, setLeadTime] = useState<number>(40);
+  const [maxLeadTime, setMaxLeadTime] = useState<number>(40);
   const [baName, setBAName] = useState<string>("");
   const [baTime, setBATime] = useState<number>(40);
+  const [maxBATime, setMaxBATime] = useState<number>(40);
   const [pmName, setPMName] = useState<string>("");
   const [pmTime, setPMTime] = useState<number>(40);
+  const [maxPMTime, setMaxPMTime] = useState<number>(40);
   const [start, setStart] = useState<string>("");
   const [end, setEnd] = useState<string>("");
   const [devName, setDevName] = useState<string>("");
   const [devTime, setDevTime] = useState<number>(40);
+  const [maxDevTime, setMaxDevTime] = useState<number>(40);
   const [qaName, setQAName] = useState<string>("");
   const [qaTime, setQATime] = useState<number>(40);
+  const [maxQATime, setMaxQATime] = useState<number>(40);
 
   const [devList, setDevList] = useState<Array<ProjectStaffProps>>([]);
   const [qaList, setQAList] = useState<Array<ProjectStaffProps>>([]);
@@ -59,6 +59,8 @@ AddProjectFormProps): JSX.Element {
   const bas = staff.filter((employ) => employ.pos.toLowerCase() == "ba");
   const pms = staff.filter((employ) => employ.pos.toLowerCase() == "pm");
 
+  const activeProjects = projectsList.filter((project) => project.isActive == true); 
+
   const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
       e.keyCode == 46 ||
@@ -76,10 +78,11 @@ AddProjectFormProps): JSX.Element {
 
   const setTime = (
     e: ChangeEvent<HTMLInputElement>,
+    maxTime: number,
     setTimeFunc: (arg0: number) => void
   ) => {
-    if (+e.target.value > 40) {
-      setTimeFunc(40);
+    if (+e.target.value > maxTime) {
+      setTimeFunc(maxTime);
     } else if (e.target.value.length > 1) {
       setTimeFunc(+e.target.value.replace(/^0/, ""));
     } else {
@@ -229,6 +232,9 @@ AddProjectFormProps): JSX.Element {
             pholder="Lead Name"
             data={staff}
             onSelected={setLeadName}
+            projects={activeProjects}
+            setFreeTime={setLeadTime}
+            setMaxFreeTime={setMaxLeadTime}
           />
           <label htmlFor="lead-time">Hour Per Week:</label>
           <input
@@ -240,7 +246,7 @@ AddProjectFormProps): JSX.Element {
             type="text"
             value={leadTime}
             onChange={(e) => {
-              setTime(e, setLeadTime);
+              setTime(e, maxLeadTime,  setLeadTime);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -254,6 +260,9 @@ AddProjectFormProps): JSX.Element {
             pholder="BA Name"
             data={bas}
             onSelected={setBAName}
+            projects={activeProjects}
+            setFreeTime={setBATime}
+            setMaxFreeTime={setMaxBATime}
           />
           <label htmlFor="ba-time">Hour Per Week:</label>
           <input
@@ -265,7 +274,7 @@ AddProjectFormProps): JSX.Element {
             type="text"
             value={baTime}
             onChange={(e) => {
-              setTime(e, setBATime);
+              setTime(e, maxBATime,  setBATime);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -279,6 +288,9 @@ AddProjectFormProps): JSX.Element {
             pholder="PM Name"
             data={pms}
             onSelected={setPMName}
+            projects={activeProjects}
+            setFreeTime={setPMTime}
+            setMaxFreeTime={setMaxPMTime}
           />
           <label htmlFor="pm-time">Hour Per Week:</label>
           <input
@@ -290,7 +302,7 @@ AddProjectFormProps): JSX.Element {
             type="text"
             value={pmTime}
             onChange={(e) => {
-              setTime(e, setPMTime);
+              setTime(e, maxPMTime,  setPMTime);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -337,6 +349,9 @@ AddProjectFormProps): JSX.Element {
               currentData={devList}
               clear={clearDev}
               setClear={setClearDev}
+              projects={activeProjects}
+              setFreeTime={setDevTime}
+              setMaxFreeTime={setMaxDevTime}
             />
             <label htmlFor="dev-time">Hour Per Week:</label>
             <input
@@ -348,7 +363,7 @@ AddProjectFormProps): JSX.Element {
               type="text"
               value={devTime}
               onChange={(e) => {
-                setTime(e, setDevTime);
+                setTime(e, maxDevTime,  setDevTime);
               }}
               onKeyDown={(e) => {
                 validateTime(e);
@@ -373,6 +388,9 @@ AddProjectFormProps): JSX.Element {
               currentData={qaList}
               clear={clearQA}
               setClear={setClearQA}
+              projects={activeProjects}
+              setFreeTime={setQATime}
+              setMaxFreeTime={setMaxQATime}
             />
 
             <label htmlFor="qa-time">Hour Per Week:</label>
@@ -385,7 +403,7 @@ AddProjectFormProps): JSX.Element {
               type="text"
               value={qaTime}
               onChange={(e) => {
-                setTime(e, setQATime);
+                setTime(e, maxQATime,  setQATime);
               }}
               onKeyDown={(e) => {
                 validateTime(e);

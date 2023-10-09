@@ -28,7 +28,7 @@
 
   &__button.error {
     border: 1px solid $red;
-    box-shadow: 0px 0px 5px rgb(253, 144, 144);
+    box-shadow: 0px 0px 5px rgb(253, 144, 144), inset 0px 0px 5px rgb(253, 144, 144);
   }
 
   &__arrow-closed,

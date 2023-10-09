@@ -3,26 +3,47 @@ import { ProjectProps, ProjectStaffProps } from "../../data/Projects";
 import { useState, ChangeEvent } from "react";
 import getEmployees from "../../utils/GetEmployees";
 import InputAutoStaff from "../InputAuto/InputAutoStaff";
-import getProjects from "../../utils/GetProjects";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import ProjectStaffEditList from "../ProjectStaffEditList/ProjectStaffEditList";
 import setProjects from "../../utils/SetProjects";
+import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
 
 import "./EditProjectForm.scss";
 
 interface EditProjectFormProps {
-  id: number;
-  closeForm: () => void;
+  id: number,
+  closeForm: () => void,
+  projectsList: Array<ProjectProps>,
 }
 
 export default function EditProjectForm({
   id,
   closeForm,
+  projectsList
 }: EditProjectFormProps): JSX.Element {
-  const projectsList = getProjects();
+  const activeProjects = projectsList.filter((project) => project.id !== id && project.isActive == true); 
   const project: ProjectProps | undefined = projectsList.filter(
     (project) => project.id == id
   )[0];
+    
+  const staff = getEmployees();
+
+  const setStaffMAxTime = (name: string, currentTime: number, setError:(error: boolean) => void) => {
+    const employ = staff.filter((s) => s.name == name)[0];
+    const id = employ ? employ.id : 0;
+      const time = employ ? employ.time : 0;
+      
+      const freeTime = time - getStaffProjectsTime(id, activeProjects, "B");
+      console.log(freeTime);
+      if (freeTime < currentTime) setError(true)
+      return freeTime;
+  }
+
+    const [isLeadTimeError, setIsLeadTimeError] = useState<boolean>(false);
+  const [isBATimeError, setIsBATimeError] = useState<boolean>(false);
+  const [isPMTimeError, setIsPMTimeError] = useState<boolean>(false);
+  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
+  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
 
   const [leadName, setLeadName] = useState<string>(
     project ? project.lead.name : ""
@@ -30,12 +51,14 @@ export default function EditProjectForm({
   const [leadTime, setLeadTime] = useState<number>(
     project ? project.lead.time : 40
   );
+  const [maxLeadTime, setMaxLeadTime] = useState<number>(() => setStaffMAxTime(leadName, leadTime,  setIsLeadTimeError));
   const [leadTypeB, setLeadTypeB] = useState<boolean>(
     project?.lead.billingType == "B" ? true : false
   );
 
   const [baName, setBAName] = useState<string>(project ? project.ba.name : "");
   const [baTime, setBATime] = useState<number>(project ? project.ba.time : 40);
+  const [maxBATime, setMaxBATime] = useState<number>(() => setStaffMAxTime(baName, baTime,  setIsBATimeError));
   const [baTypeB, setbaTypeB] = useState<boolean>(
     project?.ba.billingType == "B" ? true : false
   );
@@ -44,12 +67,15 @@ export default function EditProjectForm({
     project?.pm.billingType == "B" ? true : false
   );
   const [pmTime, setPMTime] = useState<number>(project ? project.pm.time : 40);
+  const [maxPMTime, setMaxPMTime] = useState<number>(() => setStaffMAxTime(pmName, pmTime,  setIsPMTimeError));
   const [start, setStart] = useState<string>(project ? project.start : "");
   const [end, setEnd] = useState<string>(project ? project.end : "");
   const [devName, setDevName] = useState<string>("");
   const [devTime, setDevTime] = useState<number>(40);
+  const [maxDevTime, setMaxDevTime] = useState<number>(40);
   const [qaName, setQAName] = useState<string>("");
   const [qaTime, setQATime] = useState<number>(40);
+  const [maxQATime, setMaxQATime] = useState<number>(40);
 
   const [devList, setDevList] = useState<Array<ProjectStaffProps>>(
     project ? project.devs : []
@@ -58,16 +84,10 @@ export default function EditProjectForm({
     project ? project.qas : []
   );
 
-  const [isLeadEmpty, setIsLeadEmpty] = useState<boolean>(false);
-  const [isBAEmpty, setIsBAEmpty] = useState<boolean>(false);
-  const [isPMEmpty, setIsPMEmpty] = useState<boolean>(false);
-  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
-  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
-
   const [clearDev, setClearDev] = useState<boolean>(false);
   const [clearQA, setClearQA] = useState<boolean>(false);
 
-  const staff = getEmployees();
+
   const devs = staff.filter((employ) => employ.pos.toLowerCase() == "dev");
   const qas = staff.filter((employ) => employ.pos.toLowerCase() == "qa");
   const bas = staff.filter((employ) => employ.pos.toLowerCase() == "ba");
@@ -90,10 +110,15 @@ export default function EditProjectForm({
 
   const setTime = (
     e: ChangeEvent<HTMLInputElement>,
-    setTimeFunc: (arg0: number) => void
+    maxTime: number,
+    setTimeFunc: (arg0: number) => void,
+    setError?: (err: boolean) => void,
   ) => {
-    if (+e.target.value > 40) {
-      setTimeFunc(40);
+    if (setError) {
+      setError(false);
+    }
+    if (+e.target.value > maxTime) {
+      setTimeFunc((maxTime >= 0) ? maxTime : 0);
     } else if (e.target.value.length > 1) {
       setTimeFunc(+e.target.value.replace(/^0/, ""));
     } else {
@@ -146,7 +171,10 @@ export default function EditProjectForm({
   const saveProject = () => {
     start ? setIsStartEmpty(false) : setIsStartEmpty(true);
     end ? setIsEndEmpty(false) : setIsEndEmpty(true);
-    if (start && end) {
+    const form = document.querySelector(".form-edit");
+    const errors = form ? form.querySelectorAll(".error") : [];
+    
+    if (start && end && !errors?.length) {
       const leadID: number =
         staff.filter((employ) => employ.name == leadName)[0]?.id || 0;
       const baID: number =
@@ -208,24 +236,27 @@ export default function EditProjectForm({
       <div className="form__row">
         <div className="form__cell">
           <InputAutoStaff
-            classname={isLeadEmpty ? "form__input error" : "form__input"}
+            classname="form__input"
             label="Leader:"
             pholder="Lead Name"
             data={staff}
             onSelected={setLeadName}
             defaultValue={leadName}
+            projects={activeProjects}
+            setFreeTime={setLeadTime}
+            setMaxFreeTime={setMaxLeadTime}
           />
           <label htmlFor="lead-time">Hour Per Week:</label>
           <input
             name="lead-time"
             placeholder="Time"
-            className="form__input"
+            className={!isLeadTimeError ? "form__input" : "form__input error"}
             min={0}
             max={40}
             type="text"
             value={leadTime}
             onChange={(e) => {
-              setTime(e, setLeadTime);
+              setTime(e, maxLeadTime, setLeadTime, setIsLeadTimeError);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -240,24 +271,27 @@ export default function EditProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isBAEmpty ? "form__input error" : "form__input"}
+            classname="form__input"
             label="BA:"
             pholder="BA Name"
             data={bas}
             onSelected={setBAName}
             defaultValue={baName}
+            projects={activeProjects}
+            setFreeTime={setBATime}
+            setMaxFreeTime={setMaxBATime}
           />
           <label htmlFor="ba-time">Hour Per Week:</label>
           <input
             name="ba-time"
             placeholder="Time"
-            className={isBAEmpty ? "form__input error" : "form__input"}
+            className={!isBATimeError ? "form__input" : "form__input error"}
             min={0}
             max={40}
             type="text"
             value={baTime}
             onChange={(e) => {
-              setTime(e, setBATime);
+              setTime(e, maxBATime, setBATime, setIsBATimeError);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -272,24 +306,27 @@ export default function EditProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isPMEmpty ? "form__input error" : "form__input"}
+            classname="form__input"
             label="PM:"
             pholder="PM Name"
             data={pms}
             onSelected={setPMName}
             defaultValue={pmName}
+            projects={activeProjects}
+            setFreeTime={setPMTime}
+            setMaxFreeTime={setMaxPMTime}
           />
           <label htmlFor="pm-time">Hour Per Week:</label>
           <input
             name="pm-time"
             placeholder="Time"
-            className={isPMEmpty ? "form__input error" : "form__input"}
+            className={!isPMTimeError ? "form__input" : "form__input error"}
             min={0}
             max={40}
             type="text"
             value={pmTime}
             onChange={(e) => {
-              setTime(e, setPMTime);
+              setTime(e, maxPMTime, setPMTime, setIsPMTimeError);
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -328,7 +365,7 @@ export default function EditProjectForm({
       <div className="form__row form__row-edit">
         <div className="form__cell form__cell--edit-list">
           <p className="form__subtitle">Project Devs List:</p>
-          <ProjectStaffEditList staffList={devList} setStaffList={setDevList} />
+          <ProjectStaffEditList allStaffList={staff} staffList={devList} projectID={id} setStaffList={setDevList} projectsList={activeProjects} />
           <p className="form__subtitle">Add Dev:</p>
           <div className="form__inputs--edit">
             <InputAutoStaff
@@ -340,6 +377,9 @@ export default function EditProjectForm({
               currentData={devList}
               clear={clearDev}
               setClear={setClearDev}
+              projects={activeProjects}
+              setFreeTime={setDevTime}
+              setMaxFreeTime={setMaxDevTime}
             />
             <div className="form__edit-input--time">
               <label htmlFor="dev-time">h/Week:</label>
@@ -352,7 +392,7 @@ export default function EditProjectForm({
                 type="text"
                 value={devTime}
                 onChange={(e) => {
-                  setTime(e, setDevTime);
+                  setTime(e, maxDevTime,  setDevTime);
                 }}
                 onKeyDown={(e) => {
                   validateTime(e);
@@ -364,7 +404,7 @@ export default function EditProjectForm({
         </div>
         <div className="form__cell form__cell--edit-list">
           <p className="form__subtitle">Project QAs List:</p>
-          <ProjectStaffEditList staffList={qaList} setStaffList={setQAList} />
+          <ProjectStaffEditList allStaffList={staff} staffList={qaList} projectID={id} setStaffList={setQAList} projectsList={activeProjects}/>
           <p className="form__subtitle">Add QA:</p>
           <div className="form__inputs--edit">
             <InputAutoStaff
@@ -376,6 +416,9 @@ export default function EditProjectForm({
               currentData={qaList}
               clear={clearQA}
               setClear={setClearQA}
+              projects={activeProjects}
+              setFreeTime={setQATime}
+              setMaxFreeTime={setMaxQATime}
             />
             <div className="form__edit-input--time">
               <label htmlFor="qa-time">h/Week:</label>
@@ -388,7 +431,7 @@ export default function EditProjectForm({
                 type="text"
                 value={qaTime}
                 onChange={(e) => {
-                  setTime(e, setQATime);
+                  setTime(e, maxQATime,  setQATime);
                 }}
                 onKeyDown={(e) => {
                   validateTime(e);

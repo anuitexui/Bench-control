@@ -25,6 +25,7 @@ export default function EditStaffForm({
   );
 
   const [staffname, setStaffname] = useState<string>(employ ? employ.name : "");
+  const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
   const [staffRole, setStaffRole] = useState<string>(employ ? employ.pos : "");
   const [staffStack, setStaffStack] = useState<string>(
     employ ? employ.stack : ""
@@ -39,23 +40,25 @@ export default function EditStaffForm({
 
   const saveEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
-    const editedEmploy = employeesList.map((employ) => {
-      if (employ.id == employId) {
-        return {
-          ...employ,
-          name: staffname,
-          pos: staffRole,
-          stack: staffStack,
-          exp: staffExp,
-          speak: staffSpeak,
-          time: allowedTime,
-        };
-      } else return employ;
-    });
-    setEmployees(editedEmploy);
-    isFormOpen(false);
-  }
+    staffname ? setIsNameEmpty(false) : setIsNameEmpty(true);
+    if (staffname) {
+      const editedEmploy = employeesList.map((employ) => {
+        if (employ.id == employId) {
+          return {
+            ...employ,
+            name: staffname,
+            pos: staffRole,
+            stack: staffStack,
+            exp: staffExp,
+            speak: staffSpeak,
+            time: allowedTime,
+          };
+        } else return employ;
+      });
+      setEmployees(editedEmploy);
+      isFormOpen(false);
+    }
+  };
 
   const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -70,7 +73,7 @@ export default function EditStaffForm({
     } else if (e.keyCode < 48 || e.keyCode > 57) {
       e.preventDefault();
     }
-  }
+  };
 
   const setTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (+e.target.value > 40) {
@@ -80,14 +83,14 @@ export default function EditStaffForm({
     } else {
       setAllowedTime(+e.target.value);
     }
-  }
+  };
 
   return (
     <form className="tab__form tab__form-edit form">
       <div className="form__cell">
         <label htmlFor="name">Name:</label>
         <input
-          className="form__input"
+          className={!isNameEmpty ? "form__input" : "form__input error"}
           name="name"
           type="text"
           value={staffname}

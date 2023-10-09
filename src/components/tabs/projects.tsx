@@ -38,6 +38,7 @@ export default function Projects() {
       return (
         <EditProjectForm
           id={projectEditId}
+          projectsList={projects}
           closeForm={() => setIsEditFormOpen(false)}
         />
       );

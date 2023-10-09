@@ -1,29 +1,39 @@
-@import '../../scss/vars';
+@import "../../scss/vars";
 
 .bench-table {
-	&__placeholder{
-		font-size: 16px;
-		text-align: center;
-		padding: 15px;
-	}
+  &__placeholder {
+    font-size: 16px;
+    text-align: center;
+    padding: 15px;
+  }
 
-	td{
-		padding: 10px 5px;
-	}
+  &__row {
+    td {
+      padding: 10px 5px;
+    }
+  }
 
-	&__cell.grey{
-		background: rgba(122, 122, 122, 0.5);
-	}
+  &__cell.grey {
+    background: rgba(122, 122, 122, 0.5);
+  }
 
-	&__cell.red{
-		background: rgba(255, 39, 39, 0.5);
-	}
+  &__cell.red {
+    background: rgba(255, 39, 39, 0.5);
+  }
 
-	&__cell.yellow{
-		background: rgba(255, 255, 108, 0.5);
-	}
+  &__cell.yellow {
+    background: rgba(255, 255, 108, 0.5);
+  }
 
-	&__cell.green{
-		background: rgba(13, 138, 13, 0.5);
-	}
+  &__cell.green {
+    background: rgba(13, 138, 13, 0.5);
+  }
+}
+
+.tab__table {
+	.bench-table__row {
+    td {
+      padding: 10px 5px;
+    }
+  }
 }
